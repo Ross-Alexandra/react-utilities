@@ -1,0 +1,39 @@
+{
+  "name": "react-utilities",
+  "version": "0.0.1",
+  "description": "React utility hooks, components, & etc",
+  "main": "dist/src/index.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "tsc -p tsconfig.build.json",
+    "prepublish": "npm run build",
+    "lint": "eslint . --ext .ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ross-Alexandra/react-utilities.git"
+  },
+  "author": "Ross Alexandra",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Ross-Alexandra/react-utilities/issues"
+  },
+  "homepage": "https://github.com/Ross-Alexandra/react-utilities#readme",
+  "devDependencies": {
+    "@types/jest": "^28.1.6",
+    "@types/lodash": "^4.14.182",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "eslint": "^8.20.0",
+    "jest": "^28.1.3",
+    "ts-jest": "^28.0.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
