@@ -16,7 +16,7 @@
       "baseUrl": ".",
       "noFallthroughCasesInSwitch": true,
       "outDir": "./dist",
-      "jsx": "react"
+      "jsx": "react",
     },
     "compileOnSave": true,
     "include": ["./src"]
