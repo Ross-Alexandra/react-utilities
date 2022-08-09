@@ -15,7 +15,7 @@
       "isolatedModules": true,
       "baseUrl": ".",
       "noFallthroughCasesInSwitch": true,
-      "outDir": "./dist",
+      "outDir": "./dist/lib",
       "jsx": "react-jsx",
       "jsxImportSource": "@emotion/react"      
     },
