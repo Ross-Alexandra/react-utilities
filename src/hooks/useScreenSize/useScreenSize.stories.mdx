@@ -1,0 +1,50 @@
+import { useState } from "react";
+import {Canvas, Meta, Story, Source, Preview} from '@storybook/addon-docs/blocks';
+
+import { useScreenSize } from ".";
+
+<Meta title="useScreenSize" />
+
+# useScreenSize hook
+The `useScreenSize` hook allows you to tap into the current screen size.
+It will give you both the width and the height of the viewport, and
+it will update whenever the screen size changes. See, if you change the
+size of this viewport, you'll see the numbers below update in real time!
+
+<Canvas>
+    <Story name="Screen width &amp; height">
+    {() => {
+        const [screenWidth, screenHeight] = useScreenSize();
+        return <>
+            <p>Screen Width = {screenWidth}</p>
+            <p>Screen Height = {screenHeight}</p>
+        </>;
+    }}
+    </Story>
+</Canvas>
+
+The hook is also capable of accepting callbacks for when the width or
+the height of the screen changes. This allows you to use the previous
+and next screen sizes. For example if you needed to display something
+based on the delta of the screen size:
+<Canvas>
+    <Story name='Screen height delta'>
+        {
+            () => {
+                const [widthDelta, setWidthDelta] = useState(0);
+                const [screenWidth] = useScreenSize(
+                    (prevWidth, nextWidth) => setWidthDelta(prevDelta => prevDelta + prevWidth - nextWidth)
+                );
+                
+                return <p>Total Width Change = {widthDelta}</p>
+            }
+        }
+    </Story>
+</Canvas>
+
+## Typing
+```typescript
+type OnSizeChange = (prevSize: number, nextSize: number) => void;
+
+function useScreenSize(onWidthChange: OnSizeChange, onHeightChange: OnSizeChange): [width: number, height: number];
+```
