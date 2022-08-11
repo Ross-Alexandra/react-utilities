@@ -1,0 +1,198 @@
+import {Meta, Canvas, Story, ArgsTable} from '@storybook/addon-docs/blocks';
+import { combineRules, controlType, defaultValue, DISABLED } from '../../storybook-constants';
+
+import {useState, useEffect} from 'react';
+import { keyframes } from "@emotion/react";
+import {Animate} from '.';
+
+<Meta 
+    title='Animate'
+    component={Animate}
+    argTypes={{
+        cleanUp: DISABLED,
+        display: DISABLED,
+        animationIn: combineRules(
+            defaultValue('from {opacity: 0;}\nto {opacity: 1;}'),
+            controlType('text')
+        ),
+        animationOut: combineRules(
+            defaultValue('from {transform: scaleY(1);}\nto {transform: scaleY(0);}'),
+            controlType('text')
+        )
+    }}
+/>
+
+# Animate
+`Animate` is an easy-to-use animation component using `@emotion/styled`.
+
+The goal of this component is to abstract away complexities of rendering
+and unrendering components with animations. Normally, when someone uses
+a state variable to conditionally render a component, they might go with
+the following approach
+```jsx
+const MyComponent = ({displayComponent}) => {
+    return (
+        <div>
+            <p>This is a component:</p>
+            {displayComponent && <TheComponent />}
+        </div>
+    )
+}
+```
+
+The problem with this approach is that as soon as `displayComponent` becomes
+falsey, the component will be removed from the DOM. This means that it won't
+be given an opportunity to animate out.
+
+The `Animate` component exposes a `display` prop to solve this. This exposes
+multiple states which make animating easy.
+ - If `Animate` has not been rendered yet, passing `display={true}` will 
+ have the `animationIn` animation play,
+ - If `Animate` is already rendered, and `display={true}`, then it will continue
+ to be rendered, with no animations playing,
+ - If `Animate` is already rendered, and `display={false}`, then it will play
+ the `animationOut` animation, and after that animation is finished it will remove
+ the component from the DOM.
+ - Finally, if `Animate` is not rendered, and `display={false}`, then it will 
+ continue to not be present in the DOM.
+
+## Usage
+### @emotion/styled
+If you use `@emotion/styled`, or another JS styling library, then using this component
+is extremely straightforward.
+
+First, create some animations, then pass them to `Animate`!
+
+In the below example, when `displayComponent` is set to a truthy
+value, `Hi! I'm content!` would fade in. When `displayComponent`
+later becomes falsey, it would fade out before being removed
+from the DOM.
+```js
+import {keyframes} from '@emotion/react';
+
+const animateIn = keyframes`
+    from {opacity: 0;}
+    to {opacity: 1;}
+`;
+
+const animateOut = keyframes`
+    from {opacity: 1;}
+    to {opacity: 0;}
+`;
+
+const MyComponent = ({displayComponent}) => {
+    return (
+        <Animate
+            display={displayComponent}
+            animationIn={animateIn}
+            animationOut={animateOut}
+        >
+            <p>Hi! I'm content!</p>
+        </Animate>
+    );
+}
+```
+
+If you want to change the timings, or any other styling of Animate,
+you can treat it like a regular div! For example, if you want a 
+`display: grid` div with a 5000ms animation, then you could do 
+the following
+```js
+import styled from '@emotion/styled';
+import {keyframes} from '@emotion/react';
+
+const animateIn = keyframes`
+    from {opacity: 0;}
+    to {opacity: 1;}
+`;
+
+const animateOut = keyframes`
+    from {opacity: 1;}
+    to {opacity: 0;}
+`;
+
+const StyledAnimate = styled(Animate)`
+    display: grid;
+    animation-duration: 5000ms;
+`;
+
+const MyComponent = ({displayComponent}) => {
+    return (
+        <StyledAnimate
+            display={displayComponent}
+            animationIn={animateIn}
+            animationOut={animateOut}
+        >
+            <p>Hi! I'm content!</p>
+        </StyledAnimate>
+    );
+}
+```
+
+### CSS
+If you're using raw `.css` files, all the same functionality can be achieved!
+
+For example:
+
+`MyComponent.css`
+```css
+@keyframes animateIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes animateOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+.my-component {
+    display: grid;
+    animation-duration: 5000ms;
+}
+```
+
+`MyCompoment.js`
+```js
+import "./MyComponent.css";
+
+const MyComponent = ({displayComponent}) => {
+    return (
+        <Animate
+            display={displayComponent}
+            animationIn={'animateIn'}
+            animationOut={'animateOut'}
+        >
+            <p>Hi! I'm content!</p>
+        </Animate>
+    );
+}
+```
+
+## Example
+
+<Canvas>
+    <Story name='Animation'>
+        {({animationIn, animationOut}) => {
+            const [display, setDisplay] = useState(false);
+            useEffect(() => {
+                setInterval(() => {
+                    setDisplay(currentDisplay => !currentDisplay);
+                }, 2000);
+            }, []);
+            
+            return (
+                <Animate
+                    display={display}
+                    animationIn={animationIn ? keyframes`${animationIn}` : undefined}
+                    animationOut={animationOut ? keyframes`${animationOut}` : undefined}
+                >
+                    <p>Some Arbitrary Content</p>
+                </Animate>
+            );
+        }}
+    </Story>
+</Canvas>
+
+Use these controls to change the animate on the text!
+<ArgsTable story='Animation' />

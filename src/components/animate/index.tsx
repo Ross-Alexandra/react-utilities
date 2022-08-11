@@ -12,7 +12,7 @@ extends Omit<React.PropsWithChildren<HTMLProps<HTMLDivElement>>, 'as'> {
     cleanUp?: () => void;
 }
 
-export const  Animated: React.FC<AnimatedProps> = (
+export const  Animate: React.FC<AnimatedProps> = (
     ({display, animationIn, animationOut, cleanUp, children, ...props}) => {
         const [visible, setVisible] = useState(false);
         
@@ -25,7 +25,9 @@ export const  Animated: React.FC<AnimatedProps> = (
 
         useEffect(() => {
             if (display) setVisible(true);
-            if (!display && !animationOut) setVisible(false);
+            if (!display && !animationOut) {
+                setVisible(false);
+            }
         }, [display, setVisible]);
 
         return (display || visible) ? (

@@ -31,7 +31,7 @@ export function useAsyncResponse<T>(asyncFunction: AsyncCallback<T>): AsyncRespo
                 }
             });
         () => {mounted = false};
-    });
+    }, []);
 
     if (callbackStatus === 'loading') return ['loading', undefined, undefined];
     else if (callbackStatus === 'ready') return ['ready', callbackData as T, undefined];

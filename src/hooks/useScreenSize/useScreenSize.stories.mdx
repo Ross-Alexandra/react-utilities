@@ -6,6 +6,14 @@ import { useScreenSize } from ".";
 <Meta title="useScreenSize" />
 
 # useScreenSize hook
+## Typing
+```typescript
+type OnSizeChange = (prevSize: number, nextSize: number) => void;
+
+function useScreenSize(onWidthChange: OnSizeChange, onHeightChange: OnSizeChange): [width: number, height: number];
+```
+
+## Examples
 The `useScreenSize` hook allows you to tap into the current screen size.
 It will give you both the width and the height of the viewport, and
 it will update whenever the screen size changes. See, if you change the
@@ -15,10 +23,10 @@ size of this viewport, you'll see the numbers below update in real time!
     <Story name="Screen width &amp; height">
     {() => {
         const [screenWidth, screenHeight] = useScreenSize();
-        return <>
+        return <div>
             <p>Screen Width = {screenWidth}</p>
             <p>Screen Height = {screenHeight}</p>
-        </>;
+        </div>;
     }}
     </Story>
 </Canvas>
@@ -41,10 +49,3 @@ based on the delta of the screen size:
         }
     </Story>
 </Canvas>
-
-## Typing
-```typescript
-type OnSizeChange = (prevSize: number, nextSize: number) => void;
-
-function useScreenSize(onWidthChange: OnSizeChange, onHeightChange: OnSizeChange): [width: number, height: number];
-```

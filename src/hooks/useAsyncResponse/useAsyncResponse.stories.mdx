@@ -1,0 +1,69 @@
+import { useAsyncResponse } from "./index";
+import {Canvas, Meta, Story, Source, Preview} from '@storybook/addon-docs/blocks';
+
+<Meta title='useAsyncResponse' />
+
+# useAsyncResponse hook
+# Typing
+```typescript
+type AsyncCallback<T> = () => Promise<T>;
+
+type AsyncState = 'loading' | 'ready' | 'error';
+type AsyncLoading = ['loading', undefined, undefined];
+type AsyncData<T> = ['ready', T, undefined]; 
+type AsyncError = ['error', undefined, Error];
+
+type AsyncResponse<T> = AsyncLoading | AsyncData<T> | AsyncError;
+function useAsyncResponse<T>(asyncFunction: AsyncCallback<T>): AsyncResponse<T>
+```
+
+# Examples
+The `useAsyncResponse` hook allows you to translate an
+asyncronous call into a synchronous one by polling against
+the `state` variable. It can take on the following values:
+ - `"loading"` - once the hook has been initialized, but before any
+ response from the async function
+ - `"ready"` - If the promise has `resolve`'ed
+ - `"error"` - If the promise has `reject`'ed
+
+To see these examples restart, simply click on the corresponding
+titles in the navbar on the left.
+<Canvas>
+    <Story name='Loading data'>
+        {() => {
+            async function waitForData() {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve({some: 'data'});
+                    }, 2500);
+                });
+            }
+            const [state, data] = useAsyncResponse(waitForData);
+            
+            return <div>
+                <p>State: {state}</p>
+                <pre>{JSON.stringify(data, null, 2)}</pre>
+            </div>
+        }}
+    </Story>
+</Canvas>
+
+<Canvas>
+    <Story name='Error while loading data'>
+        {() => {
+            async function rejectWithError() {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        reject({some: 'error'});
+                    }, 2500);
+                });
+            }
+            const [state,, error] = useAsyncResponse(rejectWithError);
+            
+            return <div>
+                <p>State: {state}</p>
+                <pre>{JSON.stringify(error, null, 2)}</pre>
+            </div>
+        }}
+    </Story>
+</Canvas>
