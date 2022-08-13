@@ -1,6 +1,6 @@
 {
   "name": "@ross-alexandra/react-utilities",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React utility hooks, components, & etc",
   "main": "dist/src/index.js",
   "files": [
@@ -13,7 +13,7 @@
     "lint": "eslint . --ext .ts",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "publish-all": "npm run build && node build-repo && npm publish ./dist/lib --access public && firebase deploy"
+    "deploy": "npm run build && node build-repo && npm publish ./dist/lib --access public && firebase deploy"
   },
   "repository": {
     "type": "git",
