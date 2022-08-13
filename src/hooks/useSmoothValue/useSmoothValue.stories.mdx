@@ -1,0 +1,87 @@
+import { useState, useCallback } from "react";
+import {Canvas, Meta, Story, Source, ArgsTable} from '@storybook/addon-docs/blocks';
+import { combineRules, controlType, defaultValue } from '../../storybook-constants';
+
+import { useSmoothValue } from ".";
+
+<Meta title="Hooks/useSmoothValue" />
+
+# useSmoothValue hook
+## Typing
+```typescript
+type SetTargetValue = () => void;
+
+function useSmoothValue(initialValue: number, initialTarget?: number, initialChangeIncrement?: number, initialChangeDelay?: number): [currentValue: number, setTargetValue: SetTargetValue];
+```
+
+## Usage
+The `useSmoothValue` hook allows you to tap into the current screen size.
+It will give you both the width and the height of the viewport, and
+it will update whenever the screen size changes. See, if you change the
+size of this viewport, you'll see the numbers below update in real time!
+
+The hook returns a list with the current `value`, and a callback which
+allows you to set the target value. Think of `useSmoothValue` as a 
+`useState` for a `number` typed state variable. The only difference is
+that the setter here will not instantly change the value. 
+
+The callback exposes 2 additional variables `changeIncrement` and `changeDelay`
+- `changeIncrement` is the value which will be added to the current value each
+iteration until the final value is reached (default 1). Note, if `currentValue + N*changeIncrement`
+never equals `targetValue` for integer values of `N`, then whenever the currentValue is
+within `1*changeIncrement` of `targetValue` it will be set to equal `targetValue`. For example,
+if `currentValue=1`, `targetValue=6` and `changeIncrement=2`, then currentValue will 
+take the following values `1, 3, 5, 6`. Since 5 (`currentValue`) is within 2 (`changeIncrement`)
+of 6 (`targetValue`), `currentValue` is set to 6 instead of 7.
+- `changeDelay` is the delay (in MS, default 1) between each value change.
+
+## Examples
+Due to storybook rendering, some lower examples won't allow you to see the
+actual usage of the code. If you would like to see how it's used, press 
+'Show code' on the below example.
+
+<Canvas>
+    <Story name="Code Example">
+    {() => {
+        const [currentValue, setTargetValue] = useSmoothValue(0, 500);
+        const setRandomTarget = useCallback(() => {
+                const newTargetValue = Math.floor(Math.random() * 1000);
+                const increment = newTargetValue > currentValue ? 1 : -1;
+                setTargetValue(newTargetValue, increment);
+        }, [currentValue]);
+        return <div>
+            <p>Current value = {currentValue}</p>
+            <button onClick={setRandomTarget}>Change Value</button>
+        </div>;
+    }}
+    </Story>
+</Canvas>
+
+Using `useSmoothValue` as a state variable.
+<Canvas>
+    <Story 
+        name='As a state variable'
+        args={{
+            changeIncrement: 1,
+            changeDelay: 1
+        }}
+    >
+        {({changeIncrement, changeDelay}) => {
+            const [currentValue, setTargetValue] = useSmoothValue(0);
+            const onChangeValue = useCallback((e) => {
+                const targetValue = e.target.value;
+                setTargetValue(targetValue, changeIncrement, changeDelay);
+            }, []);
+            return <div>
+                <p>Current value = {currentValue}</p>
+                <input
+                    type='number'
+                    placeholder='Next Value'
+                    onChange={onChangeValue}
+                />
+            </div>;
+        }}
+    </Story>
+</Canvas>
+
+<ArgsTable story='As a state variable' />
