@@ -1,0 +1,76 @@
+import {Meta, Canvas, Story, ArgsTable} from '@storybook/addon-docs/blocks';
+import { combineRules, controlType, defaultValue, DISABLED } from '../../storybook-constants';
+
+import {useState, useEffect} from 'react';
+import { keyframes } from "@emotion/react";
+import {RollingText} from '.';
+
+<Meta 
+    title='Rolling Text'
+    component={RollingText}
+    argTypes={{
+        className: DISABLED,
+        children: DISABLED,
+        textDuration: combineRules(
+            defaultValue(2500),
+            controlType('number')
+        ),
+        initialDelay: combineRules(
+            defaultValue(750),
+            controlType('number')
+        )
+    }}
+/>
+
+# Rolling Text
+`RollingText` is a component to support text which rotates through values.
+The provided children will each slide in from the left, then slide out
+to the right. When it runs out of text, it will cycle back to the first
+and restart.
+
+## Usage
+By default, the `RollingText` element acts as a div with `position: relative` and
+`overflow: hidden`. If either of these values are changed then this component will
+break, otherwise it can be stylized as you'd like!
+
+To do this, you can either pass a `className` (or use an `@emotion/styled`
+`styled(RollingText)`), or you can pass a `style` dictionary.
+
+```jsx
+const MyComponent = () => {
+    return (
+        <RollingText
+            textDuration={2500}
+            initialDelay={750}
+        >
+            <p>This is some text</p>
+            <p>This is other text</p>
+            <p>This is the last text</p>
+        </RollingText>
+    );
+}
+```
+
+## Example
+
+<Canvas>
+    <Story name='Rolling Text Element'>
+        {({textDuration, initialDelay}) => {
+            return (
+                <RollingText
+                    textDuration={textDuration}
+                    initialDelay={initialDelay}
+                    style={{height: '100px'}}
+                >
+                    <p>This is some text</p>
+                    <p>This is other text</p>
+                    <p>This is the last text</p>
+                </RollingText>
+            );
+        }}
+    </Story>
+</Canvas>
+
+Use these controls to change the duration of each text
+or change the delay before the first rotation!
+<ArgsTable story='Rolling Text Element' />

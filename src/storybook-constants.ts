@@ -4,7 +4,7 @@ export const defaultValue = <T>(value: T) => ({defaultValue: value});
 
 // Updated as more are used for simplicity.
 // https://storybook.js.org/docs/react/essentials/controls
-type sbControlTypes = "boolean" | "text"
+type sbControlTypes = "boolean" | "text" | "number";
 export const controlType = (controlType: sbControlTypes, ...args: Record<string, any>[]) => Object.assign({control: {type: controlType}}, ...args); 
 
 export const combineRules = (...args: Record<string, any>[]) => Object.assign({}, ...args);
