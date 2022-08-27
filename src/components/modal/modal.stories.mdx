@@ -38,6 +38,11 @@ To control whether or not the modal is open, simply provide a boolean
 `isOpen` prop. The modal itself will handle all the transitions/etc
 when the value of the prop changes.
 
+If you want something to happen when the background behind the
+modal is clicked (closing the modal for example), then provide
+a `onBackgroundClick` `() => void` function prop to the `Modal`
+component.
+
 `Modal` is created using the `Animate` component, and the modal
 exposes all relevant props to you. This means that you can
 specify the modal's `animationIn`, and `animationOut`. Further, 
@@ -80,6 +85,7 @@ The following Modal example can be implemented using the following code:
             </div>
             <Modal
                 isOpen={isOpen}
+                onBackgroundClick={handleClose}
                 animationOut={keyframes`
                     from {top: 50%}
                     to {top: -150%}
@@ -119,6 +125,7 @@ your own portal.
                         isOpen={isOpen}
                         animationIn={keyframes`${animationIn}`}
                         animationOut={keyframes`${animationOut}`}
+                        onBackgroundClick={handleClose}
                     >
                         <ModalFrame handleClose={handleClose}>
                             <h2>You need to login first!</h2>

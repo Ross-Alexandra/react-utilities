@@ -15,6 +15,7 @@ export interface ModalProps extends React.PropsWithChildren<React.HTMLProps<HTML
     isOpen: boolean;
     onOpen?: () => void;
     onClose?: () => void;
+    onBackgroundClick?: () => void;
     animationIn?: Keyframes | string;
     animationOut?: Keyframes | string;
     portalId?: string;
@@ -24,6 +25,7 @@ export const Modal: React.FC<ModalProps> = ({
     isOpen,
     onOpen,
     onClose,
+    onBackgroundClick,
     animationIn=fadein,
     animationOut=fadeout,
     children,
@@ -39,6 +41,7 @@ export const Modal: React.FC<ModalProps> = ({
             isOpen={isOpen}
             onOpen={onOpen}
             onClose={onClose}
+            onBackgroundClick={onBackgroundClick}
             animationIn={animationIn}
             animationOut={animationOut}
             className={className}
@@ -52,6 +55,7 @@ const ModalComponent: React.FC<ModalProps> = ({
     isOpen,
     onOpen,
     onClose,
+    onBackgroundClick,
     animationIn=fadein,
     animationOut=fadeout,
     children,
@@ -65,7 +69,7 @@ const ModalComponent: React.FC<ModalProps> = ({
                 animationIn={fadein}
                 animationOut={fadeout}
             >
-                <ContentObscurer />
+                <ContentObscurer onClick={() => onBackgroundClick?.()} />
             </Animate>
             <ModalWrapper 
                 display={isOpen}
