@@ -7,21 +7,24 @@ import React, { AnimationEventHandler, HTMLProps, useCallback, useEffect, useSta
 export interface AnimatedProps 
 extends Omit<React.PropsWithChildren<HTMLProps<HTMLDivElement>>, 'as'> {
     display: boolean;
-    animationIn?: Keyframes;
-    animationOut?: Keyframes;
-    cleanUp?: () => void;
+    animationIn?: Keyframes | string;
+    animationOut?: Keyframes | string;
+    afterAnimateIn?: () => void;
+    afterAnimateOut?: () => void;
 }
 
 export const  Animate: React.FC<AnimatedProps> = (
-    ({display, animationIn, animationOut, cleanUp, children, ...props}) => {
+    ({display, animationIn, animationOut, afterAnimateIn, afterAnimateOut, children, ...props}) => {
         const [visible, setVisible] = useState(false);
         
         const onAnimationEnd = useCallback(() => {
             if (!display) {
                 setVisible(false);
-                if (cleanUp) cleanUp();
+                afterAnimateOut?.();
+            } else {
+                afterAnimateIn?.();
             }
-        }, [display, setVisible, cleanUp]);
+        }, [display, setVisible, afterAnimateIn, afterAnimateOut]);
 
         useEffect(() => {
             if (display) setVisible(true);
@@ -46,8 +49,8 @@ export const  Animate: React.FC<AnimatedProps> = (
 
 interface AnimationDivProps extends HTMLProps<HTMLDivElement> {
     shouldDisplay: boolean;
-    animationIn?: Keyframes;
-    animationOut?: Keyframes;
+    animationIn?: Keyframes | string;
+    animationOut?: Keyframes | string;
     onAnimationEnd: AnimationEventHandler<HTMLDivElement>;
 }
 
