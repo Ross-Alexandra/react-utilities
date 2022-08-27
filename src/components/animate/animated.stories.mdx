@@ -9,7 +9,8 @@ import {Animate} from '.';
     title='Components/Animate'
     component={Animate}
     argTypes={{
-        cleanUp: DISABLED,
+        onOpen: DISABLED,
+        onClose: DISABLED,
         display: DISABLED,
         animationIn: combineRules(
             defaultValue('from {opacity: 0;}\nto {opacity: 1;}'),
@@ -128,6 +129,10 @@ const MyComponent = ({displayComponent}) => {
     );
 }
 ```
+
+Finally, if you want some code to be executed when `Animate`'s `animationIn`,
+or `animationOut` are finished, you can pass an `afterAnimateIn` or `afterAnimateOut` function.
+The typing of these functions are `() => void;`.
 
 ### CSS
 If you're using raw `.css` files, all the same functionality can be achieved!
