@@ -1,6 +1,6 @@
 {
   "name": "@ross-alexandra/react-utilities",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "React utility hooks, components, & etc",
   "main": "dist/src/index.js",
   "files": [
@@ -53,8 +53,8 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "lodash": "^4.17.21",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "peerDependencies": {
     "react": "^18.2.0",
