@@ -63,13 +63,13 @@ const ModalComponent: React.FC<ModalProps> = ({
     style
 }) => {
     return (
-        <>
+        <div className={className}>
             <Animate
                 display={isOpen}
                 animationIn={fadein}
                 animationOut={fadeout}
             >
-                <ContentObscurer onClick={() => onBackgroundClick?.()} />
+                <ContentObscurer onClick={() => onBackgroundClick?.()} className='modal-background'/>
             </Animate>
             <ModalWrapper 
                 display={isOpen}
@@ -77,11 +77,11 @@ const ModalComponent: React.FC<ModalProps> = ({
                 animationOut={animationOut}
                 afterAnimateIn={onOpen}
                 afterAnimateOut={onClose}
-                className={className}
+                className='modal'
                 style={style}
             >
                 {children}
             </ModalWrapper>
-        </>
+        </div>
     );
 };

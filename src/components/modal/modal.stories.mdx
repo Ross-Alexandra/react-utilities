@@ -49,6 +49,23 @@ specify the modal's `animationIn`, and `animationOut`. Further,
 to hook into animation completion, simply provide a `onOpen` or
 `onClose` `() => void` function prop.
 
+Should you need to style the modal itself, or the background
+of the modal, they have exposed classNames which you can provide.
+The modal has `modal`, and the modal background has `modal-background`.
+Either add these in your `.css` file, or if you're using CSS in JS, 
+use something like:
+```jsx
+const StyledModal = styled(Modal)`
+    .modal {
+        background-color: green;
+    }
+
+    .modal-background {
+        background-color: blue;
+    }
+`;
+```
+
 The component is implemented using React Portals. This is why the
 `ModalPortal` is required. Because of this, if for some reason you 
 need multiple root modals, the `ModalPortal` component accepts an
