@@ -1,6 +1,6 @@
 {
   "name": "@ross-alexandra/react-utilities",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "React utility hooks, components, & etc",
   "main": "dist/src/index.js",
   "files": [

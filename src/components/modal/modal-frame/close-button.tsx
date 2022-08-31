@@ -4,14 +4,14 @@ export interface CloseButtonProps extends SVGProps<SVGSVGElement> {
     handleClose: () => void;
     width?: number;
     height?: number;
-    color?: string;
+    stroke?: string;
 }
 
 export const CloseButton: React.FC<CloseButtonProps> = ({
     handleClose,
     width=15,
     height=15,
-    color='#000000',
+    stroke='#000000',
     ...props
 }) => {
     return (
@@ -22,7 +22,7 @@ export const CloseButton: React.FC<CloseButtonProps> = ({
                 y1={0}
                 y2={10}
                 strokeWidth={1} 
-                stroke={color}
+                stroke={stroke}
             />
             <line
                 x1={10}
@@ -30,7 +30,7 @@ export const CloseButton: React.FC<CloseButtonProps> = ({
                 y1={0}
                 y2={10}
                 strokeWidth={1}
-                stroke={color}
+                stroke={stroke}
             />
         </svg>
     );

@@ -1,5 +1,5 @@
 import { Keyframes } from "@emotion/react";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Animate } from "../../animate";
 import { DEFAULT_PORTAL_ID } from "../constants";
@@ -62,12 +62,24 @@ const ModalComponent: React.FC<ModalProps> = ({
     className,
     style
 }) => {
+    const [modalVisible, setModalVisible] = useState(isOpen);
+
+    useEffect(() => {
+        if (isOpen) setModalVisible(true);
+    }, [isOpen]);
+
+    const hideModalWrapper = useCallback(() => {
+        setModalVisible(false)
+    }, [setModalVisible]);
+
+    if (!modalVisible) return null;
     return (
         <div className={className}>
             <Animate
                 display={isOpen}
                 animationIn={fadein}
                 animationOut={fadeout}
+                afterAnimateOut={hideModalWrapper}
             >
                 <ContentObscurer onClick={() => onBackgroundClick?.()} className='modal-background'/>
             </Animate>
