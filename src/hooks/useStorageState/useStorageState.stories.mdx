@@ -1,0 +1,100 @@
+import { generateIntStorageStateHooks, ProvideLocalStorage } from "./index";
+import {Canvas, Meta, Story, Source, Preview} from '@storybook/addon-docs/blocks';
+
+<Meta title='Hooks/useStorageState' />
+
+# useStorageState hook
+The `useStorageState` hook has 4 primary components to it:
+ - The caching context,
+ - The hooks,
+ - The transformers, and
+ - The generators
+
+## Caching Context
+In order to speed up read times for individual state values, and
+to ensure that a write to this state elsewhere will necessitate
+a re-render to that state in all components, a context is provided.
+
+To use this context, and opt-in to the caching & state consistency,
+you simply need to add the context provider to the top level of your
+app.
+
+## Hooks
+There are 2 hooks provided in this module, the namesake `useStorageState`
+hook, in addition to the `useReadOnlyStorageState`. The first hook
+acts like a classic `useState`, whereas the read only version
+only gives you a variable to read from. 
+
+## Transformers
+Since local storage only supports string variables, for
+non-string data types a transformer is needed.
+
+Provided by default are transformers for JSON serializable
+types, as well as dedicated transformers for numbers (int & float).
+
+Custom transformers can also be provided in case JSON is not enough!
+To implement a custom transformer, you'll need a `type` to `string`
+and a `string` to `type` conversion. 
+
+Example with typing for using a custom transformer.
+```typescript
+    type MyTypeToString: (val: MyType) => string;
+    type StringToMyType: (val: string) => MyType;
+
+    let myTypeToString: MyTypeToString;
+    let stringToMyType: StringToMyType;
+
+    const [myObject, setMyObject] = useStorageState<MyType>(minMicKey, minMicDefaultVolume, myTypeToString, stringToMyType);
+```
+
+## Generators
+Because of the transformers & additional data, the individual hooks
+created for a specific piece of data have a lot of boilerplate.
+
+To remedy this, some default hook generators have been provided. The
+generator hooks take the same data which a regular hook would take,
+but generate a named read/write & readonly hook. An example usage
+of this looks like:
+```typescript
+export const [useMinMicVolume, useReadOnlyMinMicVolume] = generateIntStorageStateHooks('min-mic', -40);
+
+// Equivalent to
+import {
+    numberToStringTransformer,
+    stringToIntTransformer,
+} from './transformers';
+
+const minMicKey = 'min-mic';
+const minMicDefaultVolume = -40;
+
+export const useMinMicVolume = useStorageState<number>(minMicKey, minMicDefaultVolume, numberToStringTransformer, stringToIntTransformer);
+export const useReadOnlyMinMicVolume = useReadOnlyStorageState<number>(minMicKey, minMicDefaultVolume, stringToIntTransformer);
+```
+
+# Examples
+Using the example from above, we can generate a counter
+whos value is stored in local storage. 
+
+Try refreshing the page after incrementing the counter!
+<Canvas>
+        <Story name='Local Storage Counter'>
+                {() => {
+                    const CounterComponent = () => {
+                        const [useCounter] = generateIntStorageStateHooks('example-counter-value', 0);
+                        const [counterValue, setCounterValue] = useCounter();
+                        return (
+                                <div>
+                                    <p>Counter Value: {counterValue}</p>
+                                    <button onClick={() => setCounterValue(counterValue + 1)}>Increase!</button>
+                                    <button onClick={() => setCounterValue(0)}>Reset</button>
+                                </div>
+                        );
+                    }
+                    return (
+                        <ProvideLocalStorage>
+                            <CounterComponent />
+                        </ProvideLocalStorage>
+                    );
+                }}
+        </Story>
+</Canvas>
